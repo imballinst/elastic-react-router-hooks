@@ -6,7 +6,12 @@ This repository is an example how to use [react-router](https://github.com/React
 
 Currently, @elastic/eui has a great example about how to integrate its ecosystem to react-router. However, I feel the approach of using global router and having some functions to set up is not straightforward, especially with the existence of React Hooks. I have used some of the Hooks exposed from react-router's Context and it feels really good.
 
-## How to Use
+## Running
+
+1. `yarn`
+2. `yarn start`
+
+## How It Works
 
 Set up a SINGLE file named, say, `EuiCustomLink.tsx` (or, if you are using plain Javascript, you can delete the TypeScript annotations). Then, you can just import this file and use them anywhere you want!
 
