@@ -25,6 +25,7 @@ interface EuiCustomLinkProps extends EuiLinkButtonProps {
   to: string;
 }
 
+// Most of the content of this files are from https://github.com/elastic/eui/pull/1976.
 const isModifiedEvent = (event: any) =>
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
