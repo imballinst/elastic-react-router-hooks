@@ -1,5 +1,6 @@
 {
   "name": "elastic-react-router-hooks",
+  "homepage": "https://imballinst.github.io/elastic-react-router-hooks",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
