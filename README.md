@@ -1,68 +1,63 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# elastic-react-router-hooks
 
-## Available Scripts
+This repository is an example how to use [react-router](https://github.com/ReactTraining/react-router) in [@elastic-eui](https://github.com/elastic/eui/).
 
-In the project directory, you can run:
+## Background
 
-### `yarn start`
+Currently, @elastic/eui has a great example about how to integrate its ecosystem to react-router. However, I feel the approach of using global router and having some functions to set up is not straightforward, especially with the existence of React Hooks. I have used some of the Hooks exposed from react-router's Context and it feels really good.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## How to Use
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Set up a SINGLE file named, say, `EuiCustomLink.tsx` (or, if you are using plain Javascript, you can delete the TypeScript annotations). Then, you can just import this file and use them anywhere you want!
 
-### `yarn test`
+```ts
+// EuiCustomLink.tsx.
+import React from 'react';
+import { EuiLink, EuiLinkButtonProps } from '@elastic/eui';
+import { useHistory } from 'react-router';
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+interface EuiCustomLinkProps extends EuiLinkButtonProps {
+  to: string;
+}
 
-### `yarn build`
+const isModifiedEvent = (event: any) =>
+  !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const isLeftClickEvent = (event: any) => event.button === 0;
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+export default function EuiCustomLink({ to, ...props }: EuiCustomLinkProps) {
+  // This is the key!
+  const history = useHistory();
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  function onClick(event: any) {
+    if (event.defaultPrevented) {
+      return;
+    }
 
-### `yarn eject`
+    // If target prop is set (e.g. to "_blank"), let browser handle link.
+    if (event.target.getAttribute('target')) {
+      return;
+    }
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    if (isModifiedEvent(event) || !isLeftClickEvent(event)) {
+      return;
+    }
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    // Prevent regular link behavior, which causes a browser refresh.
+    event.preventDefault();
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    // Push the route to the history.
+    history.push(to);
+  }
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  return <EuiLink {...props} href={to} onClick={onClick} />;
+}
+```
 
-## Learn More
+## Contributing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Feel free to submit a pull request if you feel like to add improvements to this sample repository.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+MIT
