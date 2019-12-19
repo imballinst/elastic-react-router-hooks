@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom';
+
 import EuiCustomLink from './EuiCustomLink';
 import Home from '../views/Home';
 import About from '../views/About';
 
-const basePath = '/elastic-react-router-hooks';
-const homePath = `${basePath}/`;
-const aboutPath = `${basePath}/about`;
+import Drawer from '../views/Drawer';
+import { basePath, homePath, aboutPath } from '../links';
 
 export default function RootRoutes() {
   const history = useHistory();
@@ -17,7 +17,7 @@ export default function RootRoutes() {
 
   return (
     <div>
-      <nav>
+      <nav style={{ paddingLeft: 53 }}>
         <ul className="nav">
           <li className="list-item">
             <EuiCustomLink to={homePath}>Home</EuiCustomLink>
@@ -29,7 +29,9 @@ export default function RootRoutes() {
 
         <hr />
       </nav>
-      <main className="content">
+      <Drawer />
+
+      <main className="content" style={{ paddingLeft: 60 }}>
         <Route exact path={homePath} component={Home} />
         <Route path={aboutPath} component={About} />
       </main>
